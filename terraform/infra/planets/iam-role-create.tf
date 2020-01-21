@@ -1,6 +1,6 @@
-resource "aws_iam_role" "register_iam_role" {
+resource "aws_iam_role" "create_iam_role" {
   
-  name = "${var.environment}-register-iam-role"
+  name = "${var.environment}-create-iam-role"
 
   assume_role_policy = <<EOF
 {
@@ -23,8 +23,8 @@ EOF
   }
 }
 
-resource "aws_ssm_parameter" "register_iam_role" {
-  name = "${var.environment}-register-iam-role"
+resource "aws_ssm_parameter" "create_iam_role" {
+  name = "${var.environment}-create-iam-role"
   type = "String"
-  value = "${aws_iam_role.register_iam_role.arn}"
+  value = "${aws_iam_role.create_iam_role.arn}"
 }

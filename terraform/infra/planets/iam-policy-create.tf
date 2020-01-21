@@ -11,7 +11,7 @@ resource "aws_iam_policy" "create_policy" {
         "dynamodb:PutItem"
       ],
       "Effect": "Allow",
-      "Resource": "${aws_dynamodb_table.users.arn}"
+      "Resource": "${aws_dynamodb_table.planets.arn}"
     },
     {
       "Effect": "Allow",
