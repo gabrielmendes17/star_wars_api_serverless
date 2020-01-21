@@ -1,0 +1,32 @@
+service: api-nodejs
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+  stage: dev
+  region: us-east-1
+
+  environment:
+    DYNAMODB_PLANETS: ${ssm:${self:custom.stage}-dynamodb-planets-table}
+
+# you can add packaging information here
+#package:
+#  include:
+#    - include-me.js
+#    - include-me-dir/**
+#  exclude:
+#    - exclude-me.js
+#    - exclude-me-dir/**
+
+functions:
+  create:
+    role: ${ssm:${self:custom.stage}-register-iam-role}
+    handler: create/handler.create
+    events:
+      - http:
+          path: planets
+          method: post
+
+custom:
+  stage: ${opt:stage, self:provider.stage}
