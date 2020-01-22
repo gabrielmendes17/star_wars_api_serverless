@@ -36,6 +36,17 @@ functions:
       - http:
           path: planets
           method: get
+  delete:
+    role: ${ssm:${self:custom.stage}-create-iam-role}
+    handler: delete/handler.delete
+    events:
+      - http:
+          path: planets/{id}
+          method: delete
+          request: 
+            parameters: 
+              paths: 
+                id: true
 
 custom:
   stage: ${opt:stage, self:provider.stage}
