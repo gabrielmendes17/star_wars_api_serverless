@@ -1,7 +1,7 @@
 'use strict';
 
-const uuid = require('uuid/v4');
 const AWS = require('aws-sdk');
+const uuid = require('uuid/v4');
 AWS.config.update({
   region: process.env.AWS_REGION
 });
@@ -12,7 +12,7 @@ module.exports.create = async event => {
   const body = JSON.parse(event.body);
 
   await documentClient.put({
-    TableName: process.env.DYNAMODB_USERS,
+    TableName: process.env.DYNAMODB_PLANETS,
     Item: {
       id: uuid(),
       name: body.name,
@@ -25,7 +25,7 @@ module.exports.create = async event => {
     statusCode: 201,
     body: JSON.stringify(
       {
-        message: "Planeta inserido com sucesso!"
+        message: `Planet ${body.name} saved sucessfully !`
       },
     ),
   };
