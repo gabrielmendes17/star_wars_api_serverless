@@ -12,18 +12,16 @@ module.exports.initializateDynamoClient = newDynamo => {
   dynamo = newDynamo;
 };
 
-module.exports.saveItem = item => {
+module.exports.saveItem = async (item) => {
   const params = {
     TableName: TABLE_NAME,
     Item: item
   };
-
-  return dynamo.put(params).promise().then(() => {
+  const item = await dynamo.put(params).promise();
     return item.itemId;
-  });
 };
 
-module.exports.getItem = itemId => {
+module.exports.getItem = async (itemId) => {
   const params = {
     Key: {
       id: itemId
@@ -31,9 +29,13 @@ module.exports.getItem = itemId => {
     TableName: TABLE_NAME
   };
 
-  return dynamo.get(params).promise().then(result => {
+  const result = await dynamo.get(params).promise();
     return result.Item;
-  });
+};
+
+module.exports.scan = async () => {
+  const data = await dynamo.scan({TableName: TABLE_NAME}).promise();
+    return data.Items;
 };
 
 module.exports.deleteItem = itemId => {
@@ -47,7 +49,7 @@ module.exports.deleteItem = itemId => {
   return dynamo.delete(params).promise();
 };
 
-module.exports.updateItem = (itemId, paramsName, paramsValue) => {
+module.exports.updateItem = async (itemId, paramsName, paramsValue) => {
   const params = {
     TableName: TABLE_NAME,
     Key: {
@@ -60,7 +62,6 @@ module.exports.updateItem = (itemId, paramsName, paramsValue) => {
     },
     ReturnValues: 'ALL_NEW'
   };
-  return dynamo.update(params).promise().then(response => {
+  const response = await dynamo.update(params).promise();
     return response.Attributes;
-  });
 };
