@@ -16,11 +16,12 @@ module.exports.initializateDynamoClient = newDynamo => {
 module.exports.saveItem = async (item) => {
   const params = {
     TableName: TABLE_NAME,
-    Item: {
+    Item: { 
       id: uuid(),
       name: item.name.toUpperCase(),
       terrain: item.terrain,
-      climate: item.climate
+      climate: item.climate,
+      moviesApperances: item.moviesApperances
     }
   };
   const response = await dynamo.put(params).promise();

@@ -2,7 +2,7 @@
 
 const databaseManager = require('./databaseManager');
 const reponseService = require('./responseService');
-const uuid = require('uuid/v4');
+const axios = require('axios');
 
 module.exports.findAll = async () => {
   const items = await databaseManager.scan();
@@ -33,6 +33,7 @@ module.exports.create = async event => {
   if (await planetExists(item)) {
       return reponseService.createResponse(201, `Planet ${item.name} saved sucessfully !`);
   }
+  item.moviesApperances = await getMoviesApperancesFromSwapi(item);
   await databaseManager.saveItem(item);
   return reponseService.createResponse(201, `Planet ${item.name} saved sucessfully !`);
 };
@@ -41,4 +42,16 @@ async function planetExists(item) {
     const response = await databaseManager.findByName(item.name);
     if (response.length > 0) return true;
     return false;
+}
+
+async function getMoviesApperancesFromSwapi({ name }) {
+    const swapiResponse = await axios.get(`https://swapi.co/api/planets/?search=${name}`);
+    if (requestIsOk(swapiResponse)) {
+    return swapiResponse.data.results[0].films.length;
+    }
+    return 0;
+}
+
+function requestIsOk(swapiResponse) {
+    return swapiResponse.status === 200 && swapiResponse.statusText === 'OK';
 }
