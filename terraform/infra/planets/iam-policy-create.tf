@@ -8,17 +8,12 @@ resource "aws_iam_policy" "create_policy" {
   "Statement": [
     {
       "Action": [
-        "dynamodb:PutItem"
-      ],
-      "Effect": "Allow",
-      "Resource": "${aws_dynamodb_table.planets.arn}"
-    },
-    {
-      "Action": [
+        "dynamodb:PutItem",
         "dynamodb:DescribeTable",
         "dynamodb:Query",
         "dynamodb:Scan",
-        "dynamodb:DeleteItem"
+        "dynamodb:DeleteItem",
+        "dynamodb:GetItem"
       ],
       "Effect": "Allow",
       "Resource": "${aws_dynamodb_table.planets.arn}"
