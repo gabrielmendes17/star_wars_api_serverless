@@ -17,7 +17,8 @@ resource "aws_iam_policy" "create_policy" {
       "Action": [
         "dynamodb:DescribeTable",
         "dynamodb:Query",
-        "dynamodb:Scan"
+        "dynamodb:Scan",
+        "dynamodb:DeleteItem"
       ],
       "Effect": "Allow",
       "Resource": "${aws_dynamodb_table.planets.arn}"
