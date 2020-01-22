@@ -14,6 +14,15 @@ resource "aws_iam_policy" "create_policy" {
       "Resource": "${aws_dynamodb_table.planets.arn}"
     },
     {
+      "Action": [
+        "dynamodb:DescribeTable",
+        "dynamodb:Query",
+        "dynamodb:Scan"
+      ],
+      "Effect": "Allow",
+      "Resource": "${aws_dynamodb_table.planets.arn}"
+    },
+    {
       "Effect": "Allow",
       "Action": [
           "logs:CreateLogGroup",
