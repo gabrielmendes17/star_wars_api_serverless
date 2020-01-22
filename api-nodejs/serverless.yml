@@ -1,4 +1,6 @@
-service: api-nodejs
+org: gabrielmendes17
+app: api-nodejs-app
+service: nodejs-api
 
 provider:
   name: aws
@@ -27,6 +29,13 @@ functions:
       - http:
           path: planets
           method: post
+  list:
+    role: ${ssm:${self:custom.stage}-create-iam-role}
+    handler: list/handler.list
+    events:
+      - http:
+          path: planets
+          method: get
 
 custom:
   stage: ${opt:stage, self:provider.stage}
