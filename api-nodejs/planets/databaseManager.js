@@ -4,6 +4,7 @@ const AWS = require('aws-sdk');
 AWS.config.update({
   region: process.env.AWS_REGION
 });
+const uuid = require('uuid/v4');
 let dynamo = new AWS.DynamoDB.DocumentClient();
 
 const TABLE_NAME = process.env.DYNAMODB_PLANETS;
@@ -15,13 +16,18 @@ module.exports.initializateDynamoClient = newDynamo => {
 module.exports.saveItem = async (item) => {
   const params = {
     TableName: TABLE_NAME,
-    Item: item
+    Item: {
+      id: uuid(),
+      name: item.name.toUpperCase(),
+      terrain: item.terrain,
+      climate: item.climate
+    }
   };
-  const item = await dynamo.put(params).promise();
-    return item.itemId;
+  const response = await dynamo.put(params).promise();
+    return response;
 };
 
-module.exports.getItem = async (itemId) => {
+module.exports.findById = async (itemId) => {
   const params = {
     Key: {
       id: itemId
@@ -32,6 +38,22 @@ module.exports.getItem = async (itemId) => {
   const result = await dynamo.get(params).promise();
     return result.Item;
 };
+
+module.exports.findByName = async (planetName) => {
+  const params = {
+    TableName: TABLE_NAME,
+    FilterExpression: 'contains(#nm, :param)',
+    ExpressionAttributeNames: {
+      "#nm" : "name"
+    },
+    ExpressionAttributeValues: {
+      ':param': planetName.toUpperCase()
+    }
+  };
+
+  const result = await dynamo.scan(params).promise();
+    return result.Items;
+}
 
 module.exports.scan = async () => {
   const data = await dynamo.scan({TableName: TABLE_NAME}).promise();
