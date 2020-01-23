@@ -1,6 +1,6 @@
 module.exports.createResponse = (statusCode, message) => {
   return {
-    statusCode: statusCode,
+    statusCode,
     body: JSON.stringify(message)
   };
 }

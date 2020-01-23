@@ -24,21 +24,21 @@ provider:
 functions:
   create:
     role: ${ssm:${self:custom.stage}-create-iam-role}
-    handler: planets/handler.create
+    handler: src/planets/handler.create
     events:
       - http:
           path: planets
           method: post
   list:
     role: ${ssm:${self:custom.stage}-create-iam-role}
-    handler: planets/handler.findAll
+    handler: src/planets/handler.findAll
     events:
       - http:
           path: planets
           method: get
   delete:
     role: ${ssm:${self:custom.stage}-create-iam-role}
-    handler: planets/handler.delete
+    handler: src/planets/handler.delete
     events:
       - http:
           path: planets/{id}
@@ -49,7 +49,7 @@ functions:
                 id: true
   findByName:
     role: ${ssm:${self:custom.stage}-create-iam-role}
-    handler: planets/handler.findByName
+    handler: src/planets/handler.findByName
     events:
       - http:
           path: planets/name/{name}
@@ -60,7 +60,7 @@ functions:
                 name: name
   findById:
     role: ${ssm:${self:custom.stage}-create-iam-role}
-    handler: planets/handler.findById
+    handler: src/planets/handler.findById
     events:
       - http:
           path: planets/{id}

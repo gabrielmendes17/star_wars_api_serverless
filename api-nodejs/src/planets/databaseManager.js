@@ -79,7 +79,7 @@ module.exports.updateItem = async (itemId, paramsName, paramsValue) => {
       id
     },
     ConditionExpression: 'attribute_exists(itemId)',
-    UpdateExpression: 'set ' + paramsName + ' = :v',
+    UpdateExpression: `set ${  paramsName  } = :v`,
     ExpressionAttributeValues: {
       ':v': paramsValue
     },

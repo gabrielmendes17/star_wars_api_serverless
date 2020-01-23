@@ -47,7 +47,7 @@ async function planetExists(item) {
 async function getMoviesApperancesFromSwapi({ name }) {
     const swapiResponse = await axios.get(`https://swapi.co/api/planets/?search=${name}`);
     if (requestIsOk(swapiResponse)) {
-    return swapiResponse.data.results[0].films.length;
+        return swapiResponse.data.results[0].films.length;
     }
     return 0;
 }
